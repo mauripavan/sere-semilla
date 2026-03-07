@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sere Semilla — Fotomontaje</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="logo" href="#">Sere <span>Semilla</span></a>
+    <nav>
+      <a href="#galeria">Galería</a>
+      <a href="#" id="adminNavBtn" class="btn-upload-nav">Admin</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section>
+    <div class="hero">
+      <div class="hero-text">
+        <div class="section-label">Portfolio · Fotomontaje</div>
+        <h1>Arte que<em>germina.</em></h1>
+        <div class="hero-divider"></div>
+        <p>Un espacio para compartir creaciones donde la fotografía se convierte en algo nuevo. Cada imagen, una semilla con vida propia.</p>
+        <a href="#galeria" class="btn-primary" style="text-decoration:none">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Ver galería
+        </a>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card large">
+          <div class="placeholder-icon">
+            <svg fill="none" stroke="rgba(100,80,60,0.8)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+        </div>
+        <div class="hero-card small">
+          <div class="placeholder-icon">
+            <svg fill="none" stroke="rgba(100,80,60,0.8)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+        </div>
+        <div class="hero-card accent">
+          <div class="placeholder-icon">
+            <svg fill="none" stroke="rgba(100,80,60,0.8)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <button class="modal-close" id="loginClose">✕</button>
+      <div class="section-label">Acceso administrador</div>
+      <h2 class="modal-title">Bienvenida</h2>
+      <p class="modal-subtitle">Ingresá tus credenciales para acceder al panel de carga.</p>
+      <form id="loginForm">
+        <div class="field-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="tu@email.com" required autocomplete="email" />
+        </div>
+        <div class="field-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <p class="login-error" id="loginError"></p>
+        <button type="submit" class="btn-primary btn-full" id="loginSubmit">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Ingresar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- UPLOAD SECTION (solo visible cuando está logueada) -->
+  <section id="upload" class="hidden">
+    <div class="upload-inner">
+      <div class="upload-header-row">
+        <div>
+          <div class="section-label">Panel de administración</div>
+          <h2>Nueva creación</h2>
+          <p>Subí tu obra: imagen, título, descripción y precio en euros.</p>
+        </div>
+        <button class="btn-secondary" id="logoutBtn">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar sesión
+        </button>
+      </div>
+
+      <div class="upload-form">
+        <!-- Drop zone -->
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept="image/*" />
+          <svg class="drop-icon" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <h3>Arrastrá tu imagen aquí</h3>
+          <p>o hacé clic para explorar · JPG, PNG, WEBP</p>
+        </div>
+
+        <!-- Image preview -->
+        <div id="imagePreview" class="image-preview hidden">
+          <img id="previewImg" src="" alt="Preview" />
+          <button type="button" class="preview-change" id="changeImage">Cambiar imagen</button>
+        </div>
+
+        <!-- Metadata fields -->
+        <div class="meta-fields">
+          <div class="field-group">
+            <label for="artTitle">Título de la obra *</label>
+            <input type="text" id="artTitle" placeholder="Ej: Raíces del tiempo" required />
+          </div>
+          <div class="field-group">
+            <label for="artDesc">Descripción</label>
+            <textarea id="artDesc" placeholder="Contá algo sobre esta obra…" rows="3"></textarea>
+          </div>
+          <div class="field-group field-price">
+            <label for="artPrice">Precio (€)</label>
+            <div class="price-input-wrap">
+              <span class="price-currency">€</span>
+              <input type="number" id="artPrice" placeholder="0" min="0" step="0.01" />
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="publishBtn" disabled>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Publicar en galería
+        </button>
+        <div class="upload-progress hidden" id="uploadProgress">
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <span id="progressLabel">Subiendo…</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="galeria">
+    <div class="gallery-header">
+      <div>
+        <div class="section-label">Colección</div>
+        <h2>Galería</h2>
+      </div>
+      <span class="gallery-count" id="galleryCount">Cargando…</span>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-loading" id="galleryLoading">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <strong>Sere Semilla</strong> &nbsp;·&nbsp; Portfolio de Fotomontaje &nbsp;·&nbsp; Todos los derechos reservados
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxClose">✕</button>
+      <img id="lightboxImg" src="" alt="" />
+      <div class="lightbox-info">
+        <p class="lightbox-caption" id="lightboxCaption"></p>
+        <p class="lightbox-desc" id="lightboxDesc"></p>
+        <p class="lightbox-price" id="lightboxPrice"></p>
+      </div>
+    </div>
+    <!-- Admin delete button (solo visible como admin) -->
+    <button class="lightbox-delete hidden" id="lightboxDelete">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      Eliminar obra
+    </button>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg">Publicado con éxito</span>
+  </div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
