@@ -1,2 +1,11 @@
 .DS_Store
 *.log
+
+# Config generado — los valores reales van en variables de entorno de Netlify
+# Descomenta la siguiente línea solo si querés ignorar config.js completamente
+# config.js
+
+# Para desarrollo local, creá un archivo .env con tus valores:
+# SUPABASE_URL=https://xxx.supabase.co
+# SUPABASE_ANON_KEY=sb_publishable_xxx
+.env
