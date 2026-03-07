@@ -33,7 +33,6 @@
           Ver galería
         </a>
       </div>
-      <!-- Hero visual: últimas 3 obras reales, cargadas dinámicamente -->
       <div class="hero-visual" id="heroVisual">
         <div class="hero-card large hero-card-placeholder">
           <div class="placeholder-icon">
@@ -79,67 +78,212 @@
     </div>
   </div>
 
-  <!-- UPLOAD SECTION (solo visible cuando está logueada) -->
-  <section id="upload" class="hidden">
-    <div class="upload-inner">
-      <div class="upload-header-row">
-        <div>
-          <div class="section-label">Panel de administración</div>
-          <h2>Nueva creación</h2>
-          <p>Subí tu obra: imagen, título, descripción y precio en euros.</p>
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       PANEL DE ADMIN (solo visible logueada)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div id="adminPanel" class="hidden">
+
+    <!-- Tabs del panel -->
+    <div class="admin-tabs-bar">
+      <div class="admin-tabs-inner">
+        <span class="admin-label">Panel de administración</span>
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-tab="tab-obras">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Obras
+          </button>
+          <button class="admin-tab" data-tab="tab-sobre-mi">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            Sobre mí
+          </button>
+          <button class="admin-tab" data-tab="tab-proyectos">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            Proyectos
+          </button>
         </div>
         <button class="btn-secondary" id="logoutBtn">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Cerrar sesión
         </button>
       </div>
+    </div>
 
-      <div class="upload-form">
-        <div class="drop-zone" id="dropZone">
-          <input type="file" id="fileInput" accept="image/*" />
-          <svg class="drop-icon" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/>
-            <line x1="12" y1="3" x2="12" y2="15"/>
-          </svg>
-          <h3>Arrastrá tu imagen aquí</h3>
-          <p>o hacé clic para explorar · JPG, PNG, WEBP</p>
-        </div>
+    <!-- TAB: OBRAS -->
+    <section id="tab-obras" class="admin-section">
+      <div class="upload-inner">
+        <div class="section-label">Nueva creación</div>
+        <h2>Subir obra</h2>
+        <p style="color:var(--ink-light);font-size:.95rem;margin-bottom:2rem;">Subí tu obra: imagen, título, descripción y precio en euros.</p>
 
-        <div id="imagePreview" class="image-preview hidden">
-          <img id="previewImg" src="" alt="Preview" />
-          <button type="button" class="preview-change" id="changeImage">Cambiar imagen</button>
-        </div>
-
-        <div class="meta-fields">
-          <div class="field-group">
-            <label for="artTitle">Título de la obra *</label>
-            <input type="text" id="artTitle" placeholder="Ej: Raíces del tiempo" required />
+        <div class="upload-form">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" />
+            <svg class="drop-icon" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <h3>Arrastrá tu imagen aquí</h3>
+            <p>o hacé clic para explorar · JPG, PNG, WEBP</p>
           </div>
-          <div class="field-group">
-            <label for="artDesc">Descripción</label>
-            <textarea id="artDesc" placeholder="Contá algo sobre esta obra…" rows="3"></textarea>
+
+          <div id="imagePreview" class="image-preview hidden">
+            <img id="previewImg" src="" alt="Preview" />
+            <button type="button" class="preview-change" id="changeImage">Cambiar imagen</button>
           </div>
-          <div class="field-group field-price">
-            <label for="artPrice">Precio (€)</label>
-            <div class="price-input-wrap">
-              <span class="price-currency">€</span>
-              <input type="number" id="artPrice" placeholder="0" min="0" step="0.01" />
+
+          <div class="meta-fields">
+            <div class="field-group">
+              <label for="artTitle">Título de la obra *</label>
+              <input type="text" id="artTitle" placeholder="Ej: Raíces del tiempo" required />
+            </div>
+            <div class="field-group">
+              <label for="artDesc">Descripción</label>
+              <textarea id="artDesc" placeholder="Contá algo sobre esta obra…" rows="3"></textarea>
+            </div>
+            <div class="field-group field-price">
+              <label for="artPrice">Precio (€)</label>
+              <div class="price-input-wrap">
+                <span class="price-currency">€</span>
+                <input type="number" id="artPrice" placeholder="0" min="0" step="0.01" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <button class="btn-primary" id="publishBtn" disabled>
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          Publicar en galería
-        </button>
-        <div class="upload-progress hidden" id="uploadProgress">
-          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-          <span id="progressLabel">Subiendo…</span>
+          <button class="btn-primary" id="publishBtn" disabled>
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Publicar en galería
+          </button>
+          <div class="upload-progress hidden" id="uploadProgress">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <span id="progressLabel">Subiendo…</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- TAB: SOBRE MÍ -->
+    <section id="tab-sobre-mi" class="admin-section hidden">
+      <div class="upload-inner">
+        <div class="section-label">Editar sección</div>
+        <h2>Sobre mí</h2>
+        <p style="color:var(--ink-light);font-size:.95rem;margin-bottom:2rem;">Estos cambios se verán reflejados en la página pública al instante.</p>
+
+        <div class="upload-form">
+          <!-- Foto de perfil -->
+          <div class="field-group">
+            <label>Foto de perfil</label>
+            <div class="photo-upload-area" id="photoUploadArea">
+              <div class="photo-current" id="photoCurrentWrap">
+                <img id="photoCurrentImg" src="" alt="Foto actual" class="hidden" />
+                <div class="photo-placeholder" id="photoPlaceholder">
+                  <svg fill="none" stroke="rgba(100,80,60,0.4)" stroke-width="1" viewBox="0 0 24 24" width="40" height="40"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                  <span>Sin foto aún</span>
+                </div>
+              </div>
+              <div class="photo-upload-btn-wrap">
+                <input type="file" id="photoFileInput" accept="image/*" class="hidden" />
+                <button type="button" class="btn-secondary" id="photoSelectBtn">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Elegir foto
+                </button>
+                <p class="field-hint">JPG o PNG · máx. 5 MB</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Párrafo 1 -->
+          <div class="field-group">
+            <label for="aboutText1">Primer párrafo</label>
+            <textarea id="aboutText1" rows="4" placeholder="Contá quién sos y qué hacés…"></textarea>
+          </div>
+
+          <!-- Párrafo 2 -->
+          <div class="field-group">
+            <label for="aboutText2">Segundo párrafo</label>
+            <textarea id="aboutText2" rows="4" placeholder="Técnicas, inspiraciones, proceso creativo…"></textarea>
+          </div>
+
+          <button class="btn-primary" id="saveAboutBtn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Guardar cambios
+          </button>
+          <div class="upload-progress hidden" id="aboutProgress">
+            <div class="progress-bar"><div class="progress-fill" id="aboutProgressFill"></div></div>
+            <span id="aboutProgressLabel">Guardando…</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: PROYECTOS -->
+    <section id="tab-proyectos" class="admin-section hidden">
+      <div class="upload-inner">
+        <div class="section-label">Editar sección</div>
+        <h2>Mis proyectos</h2>
+        <p style="color:var(--ink-light);font-size:.95rem;margin-bottom:2rem;">Editá el título, descripción y etiqueta de cada proyecto.</p>
+
+        <div class="upload-form">
+          <!-- Proyecto 1 -->
+          <div class="project-edit-card">
+            <div class="project-edit-num">01</div>
+            <div class="field-group">
+              <label for="proj1Title">Título</label>
+              <input type="text" id="proj1Title" placeholder="Nombre del proyecto" />
+            </div>
+            <div class="field-group">
+              <label for="proj1Desc">Descripción</label>
+              <textarea id="proj1Desc" rows="3" placeholder="Describí este proyecto…"></textarea>
+            </div>
+            <div class="field-group">
+              <label for="proj1Tag">Etiqueta</label>
+              <input type="text" id="proj1Tag" placeholder="Ej: Serie · 2024" />
+            </div>
+          </div>
+
+          <!-- Proyecto 2 -->
+          <div class="project-edit-card">
+            <div class="project-edit-num">02</div>
+            <div class="field-group">
+              <label for="proj2Title">Título</label>
+              <input type="text" id="proj2Title" placeholder="Nombre del proyecto" />
+            </div>
+            <div class="field-group">
+              <label for="proj2Desc">Descripción</label>
+              <textarea id="proj2Desc" rows="3" placeholder="Describí este proyecto…"></textarea>
+            </div>
+            <div class="field-group">
+              <label for="proj2Tag">Etiqueta</label>
+              <input type="text" id="proj2Tag" placeholder="Ej: Serie · 2024" />
+            </div>
+          </div>
+
+          <!-- Proyecto 3 -->
+          <div class="project-edit-card">
+            <div class="project-edit-num">03</div>
+            <div class="field-group">
+              <label for="proj3Title">Título</label>
+              <input type="text" id="proj3Title" placeholder="Nombre del proyecto" />
+            </div>
+            <div class="field-group">
+              <label for="proj3Desc">Descripción</label>
+              <textarea id="proj3Desc" rows="3" placeholder="Describí este proyecto…"></textarea>
+            </div>
+            <div class="field-group">
+              <label for="proj3Tag">Etiqueta</label>
+              <input type="text" id="proj3Tag" placeholder="Ej: Servicio · Disponible" />
+            </div>
+          </div>
+
+          <button class="btn-primary" id="saveProjectsBtn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Guardar proyectos
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /adminPanel -->
 
   <!-- GALLERY -->
   <section id="galeria">
@@ -164,30 +308,23 @@
         <div class="section-label">La artista</div>
         <h2>Sobre mí</h2>
         <div class="hero-divider"></div>
-        <p>
-          Soy artista visual especializada en fotomontaje. Mi trabajo nace de la superposición de imágenes, texturas y memorias, buscando construir mundos donde lo real y lo imaginado se disuelven.
-        </p>
-        <p>
-          Cada obra es una semilla: algo plantado con intención, que crece en quien la mira. Trabajo con fotografía analógica y digital, collage físico y edición digital, siempre en busca de esa tensión entre lo orgánico y lo construido.
-        </p>
+        <p id="publicAboutText1">Soy artista visual especializada en fotomontaje. Mi trabajo nace de la superposición de imágenes, texturas y memorias, buscando construir mundos donde lo real y lo imaginado se disuelven.</p>
+        <p id="publicAboutText2">Cada obra es una semilla: algo plantado con intención, que crece en quien la mira. Trabajo con fotografía analógica y digital, collage físico y edición digital, siempre en busca de esa tensión entre lo orgánico y lo construido.</p>
         <a href="#contacto" class="btn-primary" style="text-decoration:none; margin-top: 2rem;">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           Escribime
         </a>
       </div>
       <div class="about-visual">
-        <div class="about-frame">
-          <div class="about-placeholder">
+        <div class="about-frame" id="aboutPhotoFrame">
+          <div class="about-placeholder" id="aboutPhotoPlaceholder">
             <svg fill="none" stroke="rgba(100,80,60,0.4)" stroke-width="1" viewBox="0 0 24 24" width="48" height="48"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
             <span>Foto de la artista</span>
           </div>
+          <img id="aboutPublicPhoto" src="" alt="Foto de la artista" class="about-photo hidden" />
         </div>
-        <div class="about-tag">
-          <span>Fotomontaje</span>
-        </div>
-        <div class="about-tag about-tag-2">
-          <span>Arte visual</span>
-        </div>
+        <div class="about-tag"><span>Fotomontaje</span></div>
+        <div class="about-tag about-tag-2"><span>Arte visual</span></div>
       </div>
     </div>
   </section>
@@ -203,21 +340,21 @@
       <div class="projects-grid">
         <div class="project-card">
           <div class="project-num">01</div>
-          <h3>Raíces</h3>
-          <p>Una serie sobre la memoria y el territorio. Fotografías de paisajes superpuestas con retratos familiares, explorando el vínculo entre identidad y lugar.</p>
-          <span class="project-tag">Serie · 2023</span>
+          <h3 id="publicProj1Title">Raíces</h3>
+          <p id="publicProj1Desc">Una serie sobre la memoria y el territorio. Fotografías de paisajes superpuestas con retratos familiares, explorando el vínculo entre identidad y lugar.</p>
+          <span class="project-tag" id="publicProj1Tag">Serie · 2023</span>
         </div>
         <div class="project-card">
           <div class="project-num">02</div>
-          <h3>Tránsito</h3>
-          <p>El movimiento como metáfora. Fotomontajes construidos a partir de exposiciones múltiples y collage digital, capturando la sensación de estar entre dos mundos.</p>
-          <span class="project-tag">Serie · 2024</span>
+          <h3 id="publicProj2Title">Tránsito</h3>
+          <p id="publicProj2Desc">El movimiento como metáfora. Fotomontajes construidos a partir de exposiciones múltiples y collage digital, capturando la sensación de estar entre dos mundos.</p>
+          <span class="project-tag" id="publicProj2Tag">Serie · 2024</span>
         </div>
         <div class="project-card">
           <div class="project-num">03</div>
-          <h3>Encargos personalizados</h3>
-          <p>Obras únicas creadas a medida. Si tenés una idea o querés un fotomontaje especial, podemos trabajarlo juntas desde cero.</p>
-          <span class="project-tag">Servicio · Disponible</span>
+          <h3 id="publicProj3Title">Encargos personalizados</h3>
+          <p id="publicProj3Desc">Obras únicas creadas a medida. Si tenés una idea o querés un fotomontaje especial, podemos trabajarlo juntas desde cero.</p>
+          <span class="project-tag" id="publicProj3Tag">Servicio · Disponible</span>
         </div>
       </div>
     </div>
@@ -231,16 +368,11 @@
         <h2>Contacto</h2>
         <div class="hero-divider"></div>
         <p>¿Te interesa una obra, tenés una idea para un encargo o simplemente querés decir hola? Escribime por el medio que prefieras.</p>
-
-        <!-- WhatsApp CTA -->
         <a href="https://wa.me/34683149248" target="_blank" rel="noopener" class="btn-whatsapp">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Escribime por WhatsApp
         </a>
       </div>
-
       <div class="contact-right">
         <form id="contactForm" class="contact-form">
           <div class="field-group">
@@ -279,11 +411,8 @@
         <p class="lightbox-caption" id="lightboxCaption"></p>
         <p class="lightbox-desc" id="lightboxDesc"></p>
         <p class="lightbox-price" id="lightboxPrice"></p>
-        <!-- Botón Lo quiero (WhatsApp) -->
         <a id="lightboxWhatsapp" href="#" target="_blank" rel="noopener" class="btn-whatsapp btn-whatsapp-lightbox">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           ¡Lo quiero!
         </a>
       </div>
@@ -300,7 +429,6 @@
     <span id="toastMsg">Publicado con éxito</span>
   </div>
 
-  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="app.js"></script>

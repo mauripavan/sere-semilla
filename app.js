@@ -3,76 +3,120 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ─── CONFIG ────────────────────────────────────────────────────────────────
-const WHATSAPP_NUMBER = '34683149248'; // +34 683 14 92 48
+const WHATSAPP_NUMBER  = '34683149248';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mreybgwk';
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
-let currentUser = null;
+let currentUser  = null;
 let selectedFile = null;
 let currentArtwork = null;
+let selectedPhotoFile = null;
 
 // ─── ELEMENTS ──────────────────────────────────────────────────────────────
-const adminNavBtn     = document.getElementById('adminNavBtn');
-const loginModal      = document.getElementById('loginModal');
-const loginClose      = document.getElementById('loginClose');
-const loginForm       = document.getElementById('loginForm');
-const loginEmail      = document.getElementById('loginEmail');
-const loginPassword   = document.getElementById('loginPassword');
-const loginError      = document.getElementById('loginError');
-const loginSubmit     = document.getElementById('loginSubmit');
+const adminNavBtn      = document.getElementById('adminNavBtn');
+const loginModal       = document.getElementById('loginModal');
+const loginClose       = document.getElementById('loginClose');
+const loginForm        = document.getElementById('loginForm');
+const loginEmail       = document.getElementById('loginEmail');
+const loginPassword    = document.getElementById('loginPassword');
+const loginError       = document.getElementById('loginError');
+const loginSubmit      = document.getElementById('loginSubmit');
 
-const uploadSection   = document.getElementById('upload');
-const logoutBtn       = document.getElementById('logoutBtn');
+const adminPanel       = document.getElementById('adminPanel');
+const logoutBtn        = document.getElementById('logoutBtn');
 
-const dropZone        = document.getElementById('dropZone');
-const fileInput       = document.getElementById('fileInput');
-const imagePreview    = document.getElementById('imagePreview');
-const previewImg      = document.getElementById('previewImg');
-const changeImage     = document.getElementById('changeImage');
+// Tabs
+const adminTabs        = document.querySelectorAll('.admin-tab');
+const adminSections    = document.querySelectorAll('.admin-section');
 
-const artTitle        = document.getElementById('artTitle');
-const artDesc         = document.getElementById('artDesc');
-const artPrice        = document.getElementById('artPrice');
-const publishBtn      = document.getElementById('publishBtn');
-const uploadProgress  = document.getElementById('uploadProgress');
-const progressFill    = document.getElementById('progressFill');
-const progressLabel   = document.getElementById('progressLabel');
+// Obras
+const dropZone         = document.getElementById('dropZone');
+const fileInput        = document.getElementById('fileInput');
+const imagePreview     = document.getElementById('imagePreview');
+const previewImg       = document.getElementById('previewImg');
+const changeImage      = document.getElementById('changeImage');
+const artTitle         = document.getElementById('artTitle');
+const artDesc          = document.getElementById('artDesc');
+const artPrice         = document.getElementById('artPrice');
+const publishBtn       = document.getElementById('publishBtn');
+const uploadProgress   = document.getElementById('uploadProgress');
+const progressFill     = document.getElementById('progressFill');
+const progressLabel    = document.getElementById('progressLabel');
 
-const galleryGrid     = document.getElementById('galleryGrid');
-const galleryCount    = document.getElementById('galleryCount');
-const galleryLoading  = document.getElementById('galleryLoading');
+// Galería
+const galleryGrid      = document.getElementById('galleryGrid');
+const galleryCount     = document.getElementById('galleryCount');
+const galleryLoading   = document.getElementById('galleryLoading');
+const heroVisual       = document.getElementById('heroVisual');
 
-const heroVisual      = document.getElementById('heroVisual');
+// Lightbox
+const lightbox         = document.getElementById('lightbox');
+const lightboxImg      = document.getElementById('lightboxImg');
+const lightboxCaption  = document.getElementById('lightboxCaption');
+const lightboxDesc     = document.getElementById('lightboxDesc');
+const lightboxPrice    = document.getElementById('lightboxPrice');
+const lightboxWhatsapp = document.getElementById('lightboxWhatsapp');
+const lightboxClose    = document.getElementById('lightboxClose');
+const lightboxDelete   = document.getElementById('lightboxDelete');
 
-const lightbox        = document.getElementById('lightbox');
-const lightboxImg     = document.getElementById('lightboxImg');
-const lightboxCaption = document.getElementById('lightboxCaption');
-const lightboxDesc    = document.getElementById('lightboxDesc');
-const lightboxPrice   = document.getElementById('lightboxPrice');
-const lightboxWhatsapp= document.getElementById('lightboxWhatsapp');
-const lightboxClose   = document.getElementById('lightboxClose');
-const lightboxDelete  = document.getElementById('lightboxDelete');
+// Sobre mí — admin
+const photoSelectBtn   = document.getElementById('photoSelectBtn');
+const photoFileInput   = document.getElementById('photoFileInput');
+const photoCurrentImg  = document.getElementById('photoCurrentImg');
+const photoPlaceholder = document.getElementById('photoPlaceholder');
+const aboutText1       = document.getElementById('aboutText1');
+const aboutText2       = document.getElementById('aboutText2');
+const saveAboutBtn     = document.getElementById('saveAboutBtn');
+const aboutProgress    = document.getElementById('aboutProgress');
+const aboutProgressFill= document.getElementById('aboutProgressFill');
+const aboutProgressLabel=document.getElementById('aboutProgressLabel');
 
-const toast           = document.getElementById('toast');
-const toastMsg        = document.getElementById('toastMsg');
+// Sobre mí — público
+const publicAboutText1 = document.getElementById('publicAboutText1');
+const publicAboutText2 = document.getElementById('publicAboutText2');
+const aboutPublicPhoto = document.getElementById('aboutPublicPhoto');
+const aboutPhotoPlaceholder = document.getElementById('aboutPhotoPlaceholder');
 
-const contactForm     = document.getElementById('contactForm');
-const contactSubmit   = document.getElementById('contactSubmit');
+// Proyectos — admin
+const proj1Title       = document.getElementById('proj1Title');
+const proj1Desc        = document.getElementById('proj1Desc');
+const proj1Tag         = document.getElementById('proj1Tag');
+const proj2Title       = document.getElementById('proj2Title');
+const proj2Desc        = document.getElementById('proj2Desc');
+const proj2Tag         = document.getElementById('proj2Tag');
+const proj3Title       = document.getElementById('proj3Title');
+const proj3Desc        = document.getElementById('proj3Desc');
+const proj3Tag         = document.getElementById('proj3Tag');
+const saveProjectsBtn  = document.getElementById('saveProjectsBtn');
+
+// Proyectos — público
+const publicProj1Title = document.getElementById('publicProj1Title');
+const publicProj1Desc  = document.getElementById('publicProj1Desc');
+const publicProj1Tag   = document.getElementById('publicProj1Tag');
+const publicProj2Title = document.getElementById('publicProj2Title');
+const publicProj2Desc  = document.getElementById('publicProj2Desc');
+const publicProj2Tag   = document.getElementById('publicProj2Tag');
+const publicProj3Title = document.getElementById('publicProj3Title');
+const publicProj3Desc  = document.getElementById('publicProj3Desc');
+const publicProj3Tag   = document.getElementById('publicProj3Tag');
+
+// Contacto
+const contactForm      = document.getElementById('contactForm');
+const contactSubmit    = document.getElementById('contactSubmit');
+
+// Toast
+const toast            = document.getElementById('toast');
+const toastMsg         = document.getElementById('toastMsg');
 
 // ─── AUTH ───────────────────────────────────────────────────────────────────
 
 adminNavBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  if (currentUser) {
-    handleLogout();
-  } else {
-    openLoginModal();
-  }
+  currentUser ? handleLogout() : openLoginModal();
 });
 
 loginClose.addEventListener('click', closeLoginModal);
-loginModal.addEventListener('click', (e) => {
-  if (e.target === loginModal) closeLoginModal();
-});
+loginModal.addEventListener('click', (e) => { if (e.target === loginModal) closeLoginModal(); });
 
 function openLoginModal() {
   loginModal.classList.add('open');
@@ -92,33 +136,21 @@ loginForm.addEventListener('submit', async (e) => {
   loginSubmit.disabled = true;
   loginSubmit.textContent = 'Ingresando…';
 
-  const { data, error } = await db.auth.signInWithPassword({
+  const { error } = await db.auth.signInWithPassword({
     email: loginEmail.value.trim(),
     password: loginPassword.value,
   });
 
   loginSubmit.disabled = false;
-  loginSubmit.innerHTML = `
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-      <polyline points="10 17 15 12 10 7"/>
-      <line x1="15" y1="12" x2="3" y2="12"/>
-    </svg>
-    Ingresar`;
+  loginSubmit.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Ingresar`;
 
-  if (error) {
-    loginError.textContent = 'Email o contraseña incorrectos.';
-    return;
-  }
-
+  if (error) { loginError.textContent = 'Email o contraseña incorrectos.'; return; }
   closeLoginModal();
 });
 
 logoutBtn.addEventListener('click', handleLogout);
 
-async function handleLogout() {
-  await db.auth.signOut();
-}
+async function handleLogout() { await db.auth.signOut(); }
 
 db.auth.onAuthStateChange((event, session) => {
   currentUser = session?.user ?? null;
@@ -127,101 +159,269 @@ db.auth.onAuthStateChange((event, session) => {
 
 function updateUIForAuth() {
   if (currentUser) {
-    uploadSection.classList.remove('hidden');
+    adminPanel.classList.remove('hidden');
     adminNavBtn.textContent = 'Cerrar sesión';
     adminNavBtn.style.background = 'var(--rust)';
-    uploadSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    loadAdminContent();
+    adminPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else {
-    uploadSection.classList.add('hidden');
+    adminPanel.classList.add('hidden');
     adminNavBtn.textContent = 'Admin';
     adminNavBtn.style.background = '';
     resetUploadForm();
   }
-  if (lightboxDelete) {
-    lightboxDelete.classList.toggle('hidden', !currentUser);
-  }
+  lightboxDelete.classList.toggle('hidden', !currentUser);
 }
+
+// ─── ADMIN TABS ──────────────────────────────────────────────────────────────
+
+adminTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    adminTabs.forEach(t => t.classList.remove('active'));
+    adminSections.forEach(s => s.classList.add('hidden'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.remove('hidden');
+  });
+});
+
+// ─── SITE CONTENT (sobre mí + proyectos) ────────────────────────────────────
+
+async function loadSiteContent() {
+  const { data, error } = await db.from('site_content').select('*');
+  if (error || !data) return;
+
+  const content = {};
+  data.forEach(row => { content[row.key] = row.value; });
+
+  // Actualizar sección pública — Sobre mí
+  if (content.about_text_1) publicAboutText1.textContent = content.about_text_1;
+  if (content.about_text_2) publicAboutText2.textContent = content.about_text_2;
+  if (content.about_photo && content.about_photo !== '') {
+    aboutPublicPhoto.src = content.about_photo;
+    aboutPublicPhoto.classList.remove('hidden');
+    aboutPhotoPlaceholder.classList.add('hidden');
+  }
+
+  // Actualizar sección pública — Proyectos
+  if (content.project_1_title) publicProj1Title.textContent = content.project_1_title;
+  if (content.project_1_desc)  publicProj1Desc.textContent  = content.project_1_desc;
+  if (content.project_1_tag)   publicProj1Tag.textContent   = content.project_1_tag;
+  if (content.project_2_title) publicProj2Title.textContent = content.project_2_title;
+  if (content.project_2_desc)  publicProj2Desc.textContent  = content.project_2_desc;
+  if (content.project_2_tag)   publicProj2Tag.textContent   = content.project_2_tag;
+  if (content.project_3_title) publicProj3Title.textContent = content.project_3_title;
+  if (content.project_3_desc)  publicProj3Desc.textContent  = content.project_3_desc;
+  if (content.project_3_tag)   publicProj3Tag.textContent   = content.project_3_tag;
+
+  return content;
+}
+
+async function loadAdminContent() {
+  const content = await loadSiteContent();
+  if (!content) return;
+
+  // Rellenar campos del panel admin — Sobre mí
+  aboutText1.value = content.about_text_1 || '';
+  aboutText2.value = content.about_text_2 || '';
+  if (content.about_photo && content.about_photo !== '') {
+    photoCurrentImg.src = content.about_photo;
+    photoCurrentImg.classList.remove('hidden');
+    photoPlaceholder.classList.add('hidden');
+  }
+
+  // Rellenar campos del panel admin — Proyectos
+  proj1Title.value = content.project_1_title || '';
+  proj1Desc.value  = content.project_1_desc  || '';
+  proj1Tag.value   = content.project_1_tag   || '';
+  proj2Title.value = content.project_2_title || '';
+  proj2Desc.value  = content.project_2_desc  || '';
+  proj2Tag.value   = content.project_2_tag   || '';
+  proj3Title.value = content.project_3_title || '';
+  proj3Desc.value  = content.project_3_desc  || '';
+  proj3Tag.value   = content.project_3_tag   || '';
+}
+
+async function upsertContent(key, value) {
+  return db.from('site_content')
+    .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+}
+
+// ─── GUARDAR SOBRE MÍ ────────────────────────────────────────────────────────
+
+photoSelectBtn.addEventListener('click', () => photoFileInput.click());
+
+photoFileInput.addEventListener('change', () => {
+  const file = photoFileInput.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast('Solo imágenes JPG o PNG', 'error'); return; }
+  if (file.size > 5 * 1024 * 1024)     { showToast('Máximo 5 MB', 'error'); return; }
+
+  selectedPhotoFile = file;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    photoCurrentImg.src = e.target.result;
+    photoCurrentImg.classList.remove('hidden');
+    photoPlaceholder.classList.add('hidden');
+  };
+  reader.readAsDataURL(file);
+});
+
+saveAboutBtn.addEventListener('click', async () => {
+  if (!currentUser) return;
+  saveAboutBtn.disabled = true;
+  aboutProgress.classList.remove('hidden');
+  setAboutProgress(10, 'Guardando…');
+
+  try {
+    let photoUrl = null;
+
+    // Subir foto si eligió una nueva
+    if (selectedPhotoFile) {
+      setAboutProgress(30, 'Subiendo foto…');
+      const ext = selectedPhotoFile.name.split('.').pop().toLowerCase();
+      const fileName = `profile/photo-${Date.now()}.${ext}`;
+
+      const { error: uploadErr } = await db.storage
+        .from(STORAGE_BUCKET)
+        .upload(fileName, selectedPhotoFile, { upsert: true, contentType: selectedPhotoFile.type });
+
+      if (uploadErr) throw uploadErr;
+
+      const { data: urlData } = db.storage.from(STORAGE_BUCKET).getPublicUrl(fileName);
+      photoUrl = urlData.publicUrl;
+      selectedPhotoFile = null;
+    }
+
+    setAboutProgress(60, 'Guardando textos…');
+
+    const updates = [
+      upsertContent('about_text_1', aboutText1.value.trim()),
+      upsertContent('about_text_2', aboutText2.value.trim()),
+    ];
+    if (photoUrl) updates.push(upsertContent('about_photo', photoUrl));
+
+    const results = await Promise.all(updates);
+    const failed = results.find(r => r.error);
+    if (failed) throw failed.error;
+
+    setAboutProgress(100, '¡Guardado!');
+    showToast('Sección "Sobre mí" actualizada', 'success');
+
+    // Reflejar en la página pública inmediatamente
+    publicAboutText1.textContent = aboutText1.value.trim();
+    publicAboutText2.textContent = aboutText2.value.trim();
+    if (photoUrl) {
+      aboutPublicPhoto.src = photoUrl;
+      aboutPublicPhoto.classList.remove('hidden');
+      aboutPhotoPlaceholder.classList.add('hidden');
+    }
+
+    setTimeout(() => aboutProgress.classList.add('hidden'), 1500);
+
+  } catch (err) {
+    console.error(err);
+    showToast('Error al guardar. Intentá de nuevo.', 'error');
+  } finally {
+    saveAboutBtn.disabled = false;
+  }
+});
+
+function setAboutProgress(pct, label) {
+  aboutProgressFill.style.width = pct + '%';
+  aboutProgressLabel.textContent = label;
+}
+
+// ─── GUARDAR PROYECTOS ────────────────────────────────────────────────────────
+
+saveProjectsBtn.addEventListener('click', async () => {
+  if (!currentUser) return;
+  saveProjectsBtn.disabled = true;
+  saveProjectsBtn.textContent = 'Guardando…';
+
+  try {
+    const updates = [
+      upsertContent('project_1_title', proj1Title.value.trim()),
+      upsertContent('project_1_desc',  proj1Desc.value.trim()),
+      upsertContent('project_1_tag',   proj1Tag.value.trim()),
+      upsertContent('project_2_title', proj2Title.value.trim()),
+      upsertContent('project_2_desc',  proj2Desc.value.trim()),
+      upsertContent('project_2_tag',   proj2Tag.value.trim()),
+      upsertContent('project_3_title', proj3Title.value.trim()),
+      upsertContent('project_3_desc',  proj3Desc.value.trim()),
+      upsertContent('project_3_tag',   proj3Tag.value.trim()),
+    ];
+
+    const results = await Promise.all(updates);
+    const failed = results.find(r => r.error);
+    if (failed) throw failed.error;
+
+    showToast('Proyectos actualizados', 'success');
+
+    // Reflejar en la página pública inmediatamente
+    publicProj1Title.textContent = proj1Title.value.trim();
+    publicProj1Desc.textContent  = proj1Desc.value.trim();
+    publicProj1Tag.textContent   = proj1Tag.value.trim();
+    publicProj2Title.textContent = proj2Title.value.trim();
+    publicProj2Desc.textContent  = proj2Desc.value.trim();
+    publicProj2Tag.textContent   = proj2Tag.value.trim();
+    publicProj3Title.textContent = proj3Title.value.trim();
+    publicProj3Desc.textContent  = proj3Desc.value.trim();
+    publicProj3Tag.textContent   = proj3Tag.value.trim();
+
+  } catch (err) {
+    console.error(err);
+    showToast('Error al guardar proyectos.', 'error');
+  } finally {
+    saveProjectsBtn.disabled = false;
+    saveProjectsBtn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Guardar proyectos`;
+  }
+});
 
 // ─── HERO CON OBRAS REALES ──────────────────────────────────────────────────
 
 function loadHeroImages(artworks) {
-  // Tomar hasta las últimas 3 obras
   const picks = artworks.slice(0, 3);
-  if (picks.length === 0) return; // sin obras → mantener placeholders
+  if (picks.length === 0) return;
 
   const sizes = ['large', 'small', 'accent'];
-  const animations = ['floatA', 'floatB', 'floatC'];
-
-  // Reconstruir el hero-visual con imágenes reales
   heroVisual.innerHTML = '';
 
   picks.forEach((artwork, i) => {
     const card = document.createElement('div');
     card.className = `hero-card ${sizes[i]}`;
     card.style.cursor = 'pointer';
-
     const img = document.createElement('img');
     img.src = artwork.image_url;
     img.alt = artwork.title;
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    img.style.display = 'block';
-
     card.appendChild(img);
     card.addEventListener('click', () => openLightbox(artwork));
     heroVisual.appendChild(card);
   });
 
-  // Si solo hay 1 o 2 obras, llenar el resto con placeholders vacíos
   for (let i = picks.length; i < 3; i++) {
     const card = document.createElement('div');
     card.className = `hero-card ${sizes[i]} hero-card-placeholder`;
-    card.innerHTML = `<div class="placeholder-icon">
-      <svg fill="none" stroke="rgba(100,80,60,0.3)" stroke-width="1.5" viewBox="0 0 24 24" width="32" height="32">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <circle cx="8.5" cy="8.5" r="1.5"/>
-        <polyline points="21 15 16 10 5 21"/>
-      </svg>
-    </div>`;
+    card.innerHTML = `<div class="placeholder-icon"><svg fill="none" stroke="rgba(100,80,60,0.3)" stroke-width="1.5" viewBox="0 0 24 24" width="32" height="32"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
     heroVisual.appendChild(card);
   }
 }
 
 // ─── DRAG & DROP / FILE INPUT ───────────────────────────────────────────────
 
-dropZone.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  dropZone.classList.add('dragover');
-});
-
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-
 dropZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  dropZone.classList.remove('dragover');
+  e.preventDefault(); dropZone.classList.remove('dragover');
   const file = e.dataTransfer.files[0];
   if (file) handleFileSelected(file);
 });
-
-fileInput.addEventListener('change', () => {
-  if (fileInput.files[0]) handleFileSelected(fileInput.files[0]);
-});
-
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFileSelected(fileInput.files[0]); });
 changeImage.addEventListener('click', () => fileInput.click());
 
 function handleFileSelected(file) {
-  if (!file.type.startsWith('image/')) {
-    showToast('Solo se aceptan imágenes (JPG, PNG, WEBP)', 'error');
-    return;
-  }
-  if (file.size > 10 * 1024 * 1024) {
-    showToast('La imagen no puede superar los 10 MB', 'error');
-    return;
-  }
-
+  if (!file.type.startsWith('image/')) { showToast('Solo se aceptan imágenes (JPG, PNG, WEBP)', 'error'); return; }
+  if (file.size > 10 * 1024 * 1024)   { showToast('La imagen no puede superar los 10 MB', 'error'); return; }
   selectedFile = file;
-
   const reader = new FileReader();
   reader.onload = (e) => {
     previewImg.src = e.target.result;
@@ -233,10 +433,7 @@ function handleFileSelected(file) {
 }
 
 artTitle.addEventListener('input', updatePublishBtn);
-
-function updatePublishBtn() {
-  publishBtn.disabled = !(selectedFile && artTitle.value.trim());
-}
+function updatePublishBtn() { publishBtn.disabled = !(selectedFile && artTitle.value.trim()); }
 
 function resetUploadForm() {
   selectedFile = null;
@@ -270,36 +467,24 @@ publishBtn.addEventListener('click', async () => {
 
     const { error: storageError } = await db.storage
       .from(STORAGE_BUCKET)
-      .upload(fileName, selectedFile, {
-        cacheControl: '3600',
-        upsert: false,
-        contentType: selectedFile.type,
-      });
+      .upload(fileName, selectedFile, { cacheControl: '3600', upsert: false, contentType: selectedFile.type });
 
     if (storageError) throw storageError;
-
     setProgress(70, 'Guardando datos…');
 
-    const { data: urlData } = db.storage
-      .from(STORAGE_BUCKET)
-      .getPublicUrl(fileName);
-
-    const imageUrl = urlData.publicUrl;
+    const { data: urlData } = db.storage.from(STORAGE_BUCKET).getPublicUrl(fileName);
     const price = artPrice.value ? parseFloat(artPrice.value) : null;
 
-    const { error: insertError } = await db
-      .from('artworks')
-      .insert({
-        title: artTitle.value.trim(),
-        description: artDesc.value.trim() || null,
-        price: price,
-        image_url: imageUrl,
-        image_path: fileName,
-        user_id: currentUser.id,
-      });
+    const { error: insertError } = await db.from('artworks').insert({
+      title: artTitle.value.trim(),
+      description: artDesc.value.trim() || null,
+      price,
+      image_url: urlData.publicUrl,
+      image_path: fileName,
+      user_id: currentUser.id,
+    });
 
     if (insertError) throw insertError;
-
     setProgress(100, '¡Publicado!');
 
     setTimeout(() => {
@@ -330,36 +515,22 @@ async function loadGallery() {
   galleryGrid.appendChild(galleryLoading);
   galleryLoading.classList.remove('hidden');
 
-  const { data, error } = await db
-    .from('artworks')
-    .select('*')
-    .order('created_at', { ascending: false });
-
+  const { data, error } = await db.from('artworks').select('*').order('created_at', { ascending: false });
   galleryLoading.classList.add('hidden');
 
   if (error) {
     galleryCount.textContent = '';
-    galleryGrid.innerHTML = `
-      <div class="gallery-empty">
-        <p>No se pudo cargar la galería</p>
-        <span>Revisá tu conexión e intentá de nuevo</span>
-      </div>`;
+    galleryGrid.innerHTML = `<div class="gallery-empty"><p>No se pudo cargar la galería</p><span>Revisá tu conexión e intentá de nuevo</span></div>`;
     return;
   }
 
   if (!data || data.length === 0) {
     galleryCount.textContent = '0 obras';
-    galleryGrid.innerHTML = `
-      <div class="gallery-empty">
-        <p>La galería está vacía</p>
-        <span>Subí tu primera creación para comenzar</span>
-      </div>`;
+    galleryGrid.innerHTML = `<div class="gallery-empty"><p>La galería está vacía</p><span>Subí tu primera creación para comenzar</span></div>`;
     return;
   }
 
-  // Actualizar hero con las últimas 3 obras
   loadHeroImages(data);
-
   galleryCount.textContent = `${data.length} ${data.length === 1 ? 'obra' : 'obras'}`;
   galleryGrid.innerHTML = '';
 
@@ -367,19 +538,13 @@ async function loadGallery() {
     const item = document.createElement('div');
     item.className = 'gallery-item';
     item.style.animationDelay = `${i * 0.07}s`;
-
-    const priceHtml = artwork.price != null
-      ? `<span class="caption-price">€ ${formatPrice(artwork.price)}</span>`
-      : '';
-
+    const priceHtml = artwork.price != null ? `<span class="caption-price">€ ${formatPrice(artwork.price)}</span>` : '';
     item.innerHTML = `
       <img src="${artwork.image_url}" alt="${escapeHtml(artwork.title)}" loading="lazy" />
       <div class="gallery-caption">
         <span class="caption-title">${escapeHtml(artwork.title)}</span>
         ${priceHtml}
-      </div>
-    `;
-
+      </div>`;
     item.addEventListener('click', () => openLightbox(artwork));
     galleryGrid.appendChild(item);
   });
@@ -394,14 +559,9 @@ function openLightbox(artwork) {
   lightboxCaption.textContent = artwork.title;
   lightboxDesc.textContent = artwork.description || '';
   lightboxPrice.textContent = artwork.price != null ? `€ ${formatPrice(artwork.price)}` : '';
-
-  // Armar mensaje de WhatsApp con el nombre y precio de la obra
   const priceText = artwork.price != null ? ` (€ ${formatPrice(artwork.price)})` : '';
-  const msg = encodeURIComponent(
-    `Hola! Me interesa la obra "${artwork.title}"${priceText}. ¿Está disponible?`
-  );
+  const msg = encodeURIComponent(`Hola! Me interesa la obra "${artwork.title}"${priceText}. ¿Está disponible?`);
   lightboxWhatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-
   lightboxDelete.classList.toggle('hidden', !currentUser);
   lightbox.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -414,20 +574,14 @@ function closeLightbox() {
 }
 
 lightboxClose.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) closeLightbox();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeLightbox();
-});
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
 // ─── DELETE ─────────────────────────────────────────────────────────────────
 
 lightboxDelete.addEventListener('click', async () => {
   if (!currentArtwork || !currentUser) return;
-
-  const confirmed = confirm(`¿Eliminar "${currentArtwork.title}"? Esta acción no se puede deshacer.`);
-  if (!confirmed) return;
+  if (!confirm(`¿Eliminar "${currentArtwork.title}"? Esta acción no se puede deshacer.`)) return;
 
   lightboxDelete.disabled = true;
   lightboxDelete.textContent = 'Eliminando…';
@@ -436,75 +590,45 @@ lightboxDelete.addEventListener('click', async () => {
     if (currentArtwork.image_path) {
       await db.storage.from(STORAGE_BUCKET).remove([currentArtwork.image_path]);
     }
-
-    const { error } = await db
-      .from('artworks')
-      .delete()
-      .eq('id', currentArtwork.id);
-
+    const { error } = await db.from('artworks').delete().eq('id', currentArtwork.id);
     if (error) throw error;
-
     closeLightbox();
     showToast('Obra eliminada', 'success');
     loadGallery();
-
   } catch (err) {
     console.error(err);
     showToast('Error al eliminar', 'error');
   } finally {
     lightboxDelete.disabled = false;
-    lightboxDelete.innerHTML = `
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <polyline points="3 6 5 6 21 6"/>
-        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-        <path d="M10 11v6"/><path d="M14 11v6"/>
-        <path d="M9 6V4h6v2"/>
-      </svg>
-      Eliminar obra`;
+    lightboxDelete.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg> Eliminar obra`;
   }
 });
 
 // ─── CONTACTO ───────────────────────────────────────────────────────────────
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mreybgwk';
-
 contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-
   contactSubmit.disabled = true;
-  contactSubmit.innerHTML = `
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-    </svg>
-    Enviando…`;
-
-  const data = {
-    name:    document.getElementById('contactName').value.trim(),
-    email:   document.getElementById('contactEmail').value.trim(),
-    message: document.getElementById('contactMsg').value.trim(),
-  };
+  contactSubmit.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Enviando…`;
 
   try {
     const res = await fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        name:    document.getElementById('contactName').value.trim(),
+        email:   document.getElementById('contactEmail').value.trim(),
+        message: document.getElementById('contactMsg').value.trim(),
+      }),
     });
-
-    if (!res.ok) throw new Error('Error en el envío');
-
+    if (!res.ok) throw new Error();
     showToast('¡Mensaje enviado! Te respondo pronto.', 'success');
     contactForm.reset();
-
-  } catch (err) {
+  } catch {
     showToast('No se pudo enviar. Intentá de nuevo.', 'error');
   } finally {
     contactSubmit.disabled = false;
-    contactSubmit.innerHTML = `
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-      </svg>
-      Enviar mensaje`;
+    contactSubmit.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar mensaje`;
   }
 });
 
@@ -523,18 +647,11 @@ function showToast(msg, type = 'success') {
 // ─── HELPERS ────────────────────────────────────────────────────────────────
 
 function formatPrice(price) {
-  return new Intl.NumberFormat('es-ES', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(price);
+  return new Intl.NumberFormat('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(price);
 }
 
 function escapeHtml(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 // ─── INIT ───────────────────────────────────────────────────────────────────
@@ -544,4 +661,5 @@ function escapeHtml(str) {
   currentUser = session?.user ?? null;
   updateUIForAuth();
   loadGallery();
+  loadSiteContent(); // cargar textos públicos sin necesidad de login
 })();
