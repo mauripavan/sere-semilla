@@ -221,65 +221,20 @@
       <div class="upload-inner">
         <div class="section-label">Editar sección</div>
         <h2>Mis proyectos</h2>
-        <p style="color:var(--ink-light);font-size:.95rem;margin-bottom:2rem;">Editá el título, descripción y etiqueta de cada proyecto.</p>
+        <p style="color:var(--ink-light);font-size:.95rem;margin-bottom:2rem;">Agregá, editá o eliminá proyectos. Los cambios se guardan de forma individual.</p>
 
-        <div class="upload-form">
-          <!-- Proyecto 1 -->
-          <div class="project-edit-card">
-            <div class="project-edit-num">01</div>
-            <div class="field-group">
-              <label for="proj1Title">Título</label>
-              <input type="text" id="proj1Title" placeholder="Nombre del proyecto" />
-            </div>
-            <div class="field-group">
-              <label for="proj1Desc">Descripción</label>
-              <textarea id="proj1Desc" rows="3" placeholder="Describí este proyecto…"></textarea>
-            </div>
-            <div class="field-group">
-              <label for="proj1Tag">Etiqueta</label>
-              <input type="text" id="proj1Tag" placeholder="Ej: Serie · 2024" />
-            </div>
+        <!-- Lista dinámica de proyectos -->
+        <div id="projectsAdminList">
+          <div class="projects-admin-loading">
+            <div class="spinner"></div>
           </div>
-
-          <!-- Proyecto 2 -->
-          <div class="project-edit-card">
-            <div class="project-edit-num">02</div>
-            <div class="field-group">
-              <label for="proj2Title">Título</label>
-              <input type="text" id="proj2Title" placeholder="Nombre del proyecto" />
-            </div>
-            <div class="field-group">
-              <label for="proj2Desc">Descripción</label>
-              <textarea id="proj2Desc" rows="3" placeholder="Describí este proyecto…"></textarea>
-            </div>
-            <div class="field-group">
-              <label for="proj2Tag">Etiqueta</label>
-              <input type="text" id="proj2Tag" placeholder="Ej: Serie · 2024" />
-            </div>
-          </div>
-
-          <!-- Proyecto 3 -->
-          <div class="project-edit-card">
-            <div class="project-edit-num">03</div>
-            <div class="field-group">
-              <label for="proj3Title">Título</label>
-              <input type="text" id="proj3Title" placeholder="Nombre del proyecto" />
-            </div>
-            <div class="field-group">
-              <label for="proj3Desc">Descripción</label>
-              <textarea id="proj3Desc" rows="3" placeholder="Describí este proyecto…"></textarea>
-            </div>
-            <div class="field-group">
-              <label for="proj3Tag">Etiqueta</label>
-              <input type="text" id="proj3Tag" placeholder="Ej: Servicio · Disponible" />
-            </div>
-          </div>
-
-          <button class="btn-primary" id="saveProjectsBtn">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            Guardar proyectos
-          </button>
         </div>
+
+        <!-- Botón agregar -->
+        <button class="btn-add-project" id="addProjectBtn">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar proyecto
+        </button>
       </div>
     </section>
 
@@ -336,26 +291,8 @@
       <h2>Mis proyectos</h2>
       <div class="hero-divider"></div>
       <p class="projects-intro">Series y proyectos en los que he trabajado, cada uno con una intención y un universo propio.</p>
-
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-num">01</div>
-          <h3 id="publicProj1Title">Raíces</h3>
-          <p id="publicProj1Desc">Una serie sobre la memoria y el territorio. Fotografías de paisajes superpuestas con retratos familiares, explorando el vínculo entre identidad y lugar.</p>
-          <span class="project-tag" id="publicProj1Tag">Serie · 2023</span>
-        </div>
-        <div class="project-card">
-          <div class="project-num">02</div>
-          <h3 id="publicProj2Title">Tránsito</h3>
-          <p id="publicProj2Desc">El movimiento como metáfora. Fotomontajes construidos a partir de exposiciones múltiples y collage digital, capturando la sensación de estar entre dos mundos.</p>
-          <span class="project-tag" id="publicProj2Tag">Serie · 2024</span>
-        </div>
-        <div class="project-card">
-          <div class="project-num">03</div>
-          <h3 id="publicProj3Title">Encargos personalizados</h3>
-          <p id="publicProj3Desc">Obras únicas creadas a medida. Si tenés una idea o querés un fotomontaje especial, podemos trabajarlo juntas desde cero.</p>
-          <span class="project-tag" id="publicProj3Tag">Servicio · Disponible</span>
-        </div>
+      <div class="projects-grid" id="publicProjectsGrid">
+        <div class="gallery-loading"><div class="spinner"></div></div>
       </div>
     </div>
   </section>

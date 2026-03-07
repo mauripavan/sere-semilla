@@ -77,28 +77,7 @@ const publicAboutText2 = document.getElementById('publicAboutText2');
 const aboutPublicPhoto = document.getElementById('aboutPublicPhoto');
 const aboutPhotoPlaceholder = document.getElementById('aboutPhotoPlaceholder');
 
-// Proyectos — admin
-const proj1Title       = document.getElementById('proj1Title');
-const proj1Desc        = document.getElementById('proj1Desc');
-const proj1Tag         = document.getElementById('proj1Tag');
-const proj2Title       = document.getElementById('proj2Title');
-const proj2Desc        = document.getElementById('proj2Desc');
-const proj2Tag         = document.getElementById('proj2Tag');
-const proj3Title       = document.getElementById('proj3Title');
-const proj3Desc        = document.getElementById('proj3Desc');
-const proj3Tag         = document.getElementById('proj3Tag');
-const saveProjectsBtn  = document.getElementById('saveProjectsBtn');
-
-// Proyectos — público
-const publicProj1Title = document.getElementById('publicProj1Title');
-const publicProj1Desc  = document.getElementById('publicProj1Desc');
-const publicProj1Tag   = document.getElementById('publicProj1Tag');
-const publicProj2Title = document.getElementById('publicProj2Title');
-const publicProj2Desc  = document.getElementById('publicProj2Desc');
-const publicProj2Tag   = document.getElementById('publicProj2Tag');
-const publicProj3Title = document.getElementById('publicProj3Title');
-const publicProj3Desc  = document.getElementById('publicProj3Desc');
-const publicProj3Tag   = document.getElementById('publicProj3Tag');
+// (proyectos ahora son dinámicos — ver sección PROYECTOS DINÁMICOS)
 
 // Contacto
 const contactForm      = document.getElementById('contactForm');
@@ -184,7 +163,7 @@ adminTabs.forEach(tab => {
   });
 });
 
-// ─── SITE CONTENT (sobre mí + proyectos) ────────────────────────────────────
+// ─── SITE CONTENT (solo sobre mí) ───────────────────────────────────────────
 
 async function loadSiteContent() {
   const { data, error } = await db.from('site_content').select('*');
@@ -202,17 +181,6 @@ async function loadSiteContent() {
     aboutPhotoPlaceholder.classList.add('hidden');
   }
 
-  // Actualizar sección pública — Proyectos
-  if (content.project_1_title) publicProj1Title.textContent = content.project_1_title;
-  if (content.project_1_desc)  publicProj1Desc.textContent  = content.project_1_desc;
-  if (content.project_1_tag)   publicProj1Tag.textContent   = content.project_1_tag;
-  if (content.project_2_title) publicProj2Title.textContent = content.project_2_title;
-  if (content.project_2_desc)  publicProj2Desc.textContent  = content.project_2_desc;
-  if (content.project_2_tag)   publicProj2Tag.textContent   = content.project_2_tag;
-  if (content.project_3_title) publicProj3Title.textContent = content.project_3_title;
-  if (content.project_3_desc)  publicProj3Desc.textContent  = content.project_3_desc;
-  if (content.project_3_tag)   publicProj3Tag.textContent   = content.project_3_tag;
-
   return content;
 }
 
@@ -229,22 +197,176 @@ async function loadAdminContent() {
     photoPlaceholder.classList.add('hidden');
   }
 
-  // Rellenar campos del panel admin — Proyectos
-  proj1Title.value = content.project_1_title || '';
-  proj1Desc.value  = content.project_1_desc  || '';
-  proj1Tag.value   = content.project_1_tag   || '';
-  proj2Title.value = content.project_2_title || '';
-  proj2Desc.value  = content.project_2_desc  || '';
-  proj2Tag.value   = content.project_2_tag   || '';
-  proj3Title.value = content.project_3_title || '';
-  proj3Desc.value  = content.project_3_desc  || '';
-  proj3Tag.value   = content.project_3_tag   || '';
+  // Cargar proyectos en el panel admin
+  loadAdminProjects();
 }
 
 async function upsertContent(key, value) {
   return db.from('site_content')
     .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
 }
+
+// ─── PROYECTOS DINÁMICOS ─────────────────────────────────────────────────────
+
+const publicProjectsGrid = document.getElementById('publicProjectsGrid');
+const projectsAdminList  = document.getElementById('projectsAdminList');
+const addProjectBtn      = document.getElementById('addProjectBtn');
+
+async function loadPublicProjects() {
+  const { data, error } = await db
+    .from('projects')
+    .select('*')
+    .order('position', { ascending: true });
+
+  if (error || !data) {
+    publicProjectsGrid.innerHTML = '';
+    return;
+  }
+
+  if (data.length === 0) {
+    publicProjectsGrid.innerHTML = `<p style="color:var(--sand);font-size:.9rem;grid-column:1/-1">Próximamente…</p>`;
+    return;
+  }
+
+  publicProjectsGrid.innerHTML = '';
+  data.forEach((proj, i) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.innerHTML = `
+      <div class="project-num">${String(i + 1).padStart(2, '0')}</div>
+      <h3>${escapeHtml(proj.title)}</h3>
+      <p>${escapeHtml(proj.description || '')}</p>
+      <span class="project-tag">${escapeHtml(proj.tag || '')}</span>
+    `;
+    publicProjectsGrid.appendChild(card);
+  });
+}
+
+async function loadAdminProjects() {
+  projectsAdminList.innerHTML = `<div class="projects-admin-loading"><div class="spinner"></div></div>`;
+
+  const { data, error } = await db
+    .from('projects')
+    .select('*')
+    .order('position', { ascending: true });
+
+  projectsAdminList.innerHTML = '';
+
+  if (error) {
+    projectsAdminList.innerHTML = `<p style="color:var(--rust);font-size:.85rem;">Error al cargar proyectos.</p>`;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    renderAdminProjectCard(null, 1); // mostrar card vacío para empezar
+    return;
+  }
+
+  data.forEach((proj, i) => renderAdminProjectCard(proj, i + 1));
+}
+
+function renderAdminProjectCard(proj, num) {
+  const card = document.createElement('div');
+  card.className = 'project-edit-card';
+  if (proj) card.dataset.id = proj.id;
+
+  card.innerHTML = `
+    <div class="project-edit-card-header">
+      <div class="project-edit-num">${String(num).padStart(2, '0')}</div>
+      <div class="project-edit-actions">
+        <button class="btn-save-project" title="Guardar este proyecto">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Guardar
+        </button>
+        <button class="btn-delete-project" title="Eliminar proyecto">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Eliminar
+        </button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Título *</label>
+      <input type="text" class="proj-title" placeholder="Nombre del proyecto" value="${escapeHtml(proj?.title || '')}" />
+    </div>
+    <div class="field-group">
+      <label>Descripción</label>
+      <textarea class="proj-desc" rows="3" placeholder="Describí este proyecto…">${escapeHtml(proj?.description || '')}</textarea>
+    </div>
+    <div class="field-group">
+      <label>Etiqueta</label>
+      <input type="text" class="proj-tag" placeholder="Ej: Serie · 2024" value="${escapeHtml(proj?.tag || '')}" />
+    </div>
+  `;
+
+  // Botón guardar
+  card.querySelector('.btn-save-project').addEventListener('click', async () => {
+    const titleInput = card.querySelector('.proj-title');
+    const title = titleInput.value.trim();
+    if (!title) { showToast('El título es obligatorio', 'error'); titleInput.focus(); return; }
+
+    const saveBtn = card.querySelector('.btn-save-project');
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Guardando…';
+
+    const payload = {
+      title,
+      description: card.querySelector('.proj-desc').value.trim() || null,
+      tag:         card.querySelector('.proj-tag').value.trim() || null,
+      position:    [...projectsAdminList.children].indexOf(card) + 1,
+    };
+
+    let error;
+    if (card.dataset.id) {
+      // Update
+      ({ error } = await db.from('projects').update(payload).eq('id', card.dataset.id));
+    } else {
+      // Insert
+      const { data, error: insertErr } = await db.from('projects').insert(payload).select().single();
+      error = insertErr;
+      if (data) card.dataset.id = data.id;
+    }
+
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Guardar`;
+
+    if (error) { showToast('Error al guardar', 'error'); return; }
+
+    showToast('Proyecto guardado ✓', 'success');
+    loadPublicProjects(); // actualizar vista pública
+    renumberAdminCards();
+  });
+
+  // Botón eliminar
+  card.querySelector('.btn-delete-project').addEventListener('click', async () => {
+    if (!confirm('¿Eliminar este proyecto?')) return;
+
+    if (card.dataset.id) {
+      const { error } = await db.from('projects').delete().eq('id', card.dataset.id);
+      if (error) { showToast('Error al eliminar', 'error'); return; }
+    }
+
+    card.remove();
+    renumberAdminCards();
+    showToast('Proyecto eliminado', 'success');
+    loadPublicProjects();
+  });
+
+  projectsAdminList.appendChild(card);
+}
+
+function renumberAdminCards() {
+  [...projectsAdminList.children].forEach((card, i) => {
+    const numEl = card.querySelector('.project-edit-num');
+    if (numEl) numEl.textContent = String(i + 1).padStart(2, '0');
+  });
+}
+
+addProjectBtn.addEventListener('click', () => {
+  const num = projectsAdminList.children.length + 1;
+  renderAdminProjectCard(null, num);
+  // Scroll al nuevo card
+  projectsAdminList.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
 
 // ─── GUARDAR SOBRE MÍ ────────────────────────────────────────────────────────
 
@@ -331,51 +453,7 @@ function setAboutProgress(pct, label) {
   aboutProgressLabel.textContent = label;
 }
 
-// ─── GUARDAR PROYECTOS ────────────────────────────────────────────────────────
 
-saveProjectsBtn.addEventListener('click', async () => {
-  if (!currentUser) return;
-  saveProjectsBtn.disabled = true;
-  saveProjectsBtn.textContent = 'Guardando…';
-
-  try {
-    const updates = [
-      upsertContent('project_1_title', proj1Title.value.trim()),
-      upsertContent('project_1_desc',  proj1Desc.value.trim()),
-      upsertContent('project_1_tag',   proj1Tag.value.trim()),
-      upsertContent('project_2_title', proj2Title.value.trim()),
-      upsertContent('project_2_desc',  proj2Desc.value.trim()),
-      upsertContent('project_2_tag',   proj2Tag.value.trim()),
-      upsertContent('project_3_title', proj3Title.value.trim()),
-      upsertContent('project_3_desc',  proj3Desc.value.trim()),
-      upsertContent('project_3_tag',   proj3Tag.value.trim()),
-    ];
-
-    const results = await Promise.all(updates);
-    const failed = results.find(r => r.error);
-    if (failed) throw failed.error;
-
-    showToast('Proyectos actualizados', 'success');
-
-    // Reflejar en la página pública inmediatamente
-    publicProj1Title.textContent = proj1Title.value.trim();
-    publicProj1Desc.textContent  = proj1Desc.value.trim();
-    publicProj1Tag.textContent   = proj1Tag.value.trim();
-    publicProj2Title.textContent = proj2Title.value.trim();
-    publicProj2Desc.textContent  = proj2Desc.value.trim();
-    publicProj2Tag.textContent   = proj2Tag.value.trim();
-    publicProj3Title.textContent = proj3Title.value.trim();
-    publicProj3Desc.textContent  = proj3Desc.value.trim();
-    publicProj3Tag.textContent   = proj3Tag.value.trim();
-
-  } catch (err) {
-    console.error(err);
-    showToast('Error al guardar proyectos.', 'error');
-  } finally {
-    saveProjectsBtn.disabled = false;
-    saveProjectsBtn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Guardar proyectos`;
-  }
-});
 
 // ─── HERO CON OBRAS REALES ──────────────────────────────────────────────────
 
@@ -661,5 +739,6 @@ function escapeHtml(str) {
   currentUser = session?.user ?? null;
   updateUIForAuth();
   loadGallery();
-  loadSiteContent(); // cargar textos públicos sin necesidad de login
+  loadSiteContent();    // cargar textos sobre mí sin necesidad de login
+  loadPublicProjects(); // cargar proyectos públicos
 })();

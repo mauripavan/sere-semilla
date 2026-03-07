@@ -941,9 +941,17 @@ footer strong {
   background: rgba(255,255,255,0.6);
   border: 1px solid rgba(201,185,154,0.35);
   border-radius: 4px;
-  padding: 1.5rem 1.5rem 0.5rem;
+  padding: 1.5rem 1.5rem 1rem;
   margin-bottom: 1.2rem;
   position: relative;
+  animation: fadeUp 0.3s ease both;
+}
+
+.project-edit-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .project-edit-num {
@@ -952,7 +960,82 @@ footer strong {
   font-weight: 300;
   color: rgba(201,185,154,0.5);
   line-height: 1;
-  margin-bottom: 1rem;
+}
+
+.project-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-save-project {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  padding: 0.4rem 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-save-project:hover { background: var(--rust); }
+.btn-save-project:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-delete-project {
+  background: none;
+  border: 1px solid rgba(184,92,56,0.3);
+  color: var(--rust);
+  padding: 0.4rem 0.7rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s, border-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-delete-project:hover {
+  background: rgba(184,92,56,0.08);
+  border-color: var(--rust);
+}
+
+.btn-add-project {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: 1.5px dashed var(--sand);
+  color: var(--ink-light);
+  padding: 0.85rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.btn-add-project:hover {
+  border-color: var(--rust);
+  color: var(--rust);
+  background: rgba(184,92,56,0.03);
+}
+
+.projects-admin-loading {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
 }
 
 /* ─── HERO CARDS con imágenes reales ─── */
