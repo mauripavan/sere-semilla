@@ -466,24 +466,46 @@ lightboxDelete.addEventListener('click', async () => {
 
 // ─── CONTACTO ───────────────────────────────────────────────────────────────
 
-contactForm.addEventListener('submit', (e) => {
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mreybgwk';
+
+contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const name    = document.getElementById('contactName').value.trim();
-  const email   = document.getElementById('contactEmail').value.trim();
-  const message = document.getElementById('contactMsg').value.trim();
+  contactSubmit.disabled = true;
+  contactSubmit.innerHTML = `
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+    </svg>
+    Enviando…`;
 
-  // Armar el mailto con los datos del form
-  const subject = encodeURIComponent(`Consulta desde Sere Semilla — ${name}`);
-  const body    = encodeURIComponent(
-    `Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`
-  );
+  const data = {
+    name:    document.getElementById('contactName').value.trim(),
+    email:   document.getElementById('contactEmail').value.trim(),
+    message: document.getElementById('contactMsg').value.trim(),
+  };
 
-  // Abrir el cliente de mail
-  window.location.href = `mailto:seresemilla@gmail.com?subject=${subject}&body=${body}`;
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data),
+    });
 
-  showToast('Abriendo tu cliente de email…', 'success');
-  contactForm.reset();
+    if (!res.ok) throw new Error('Error en el envío');
+
+    showToast('¡Mensaje enviado! Te respondo pronto.', 'success');
+    contactForm.reset();
+
+  } catch (err) {
+    showToast('No se pudo enviar. Intentá de nuevo.', 'error');
+  } finally {
+    contactSubmit.disabled = false;
+    contactSubmit.innerHTML = `
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+      Enviar mensaje`;
+  }
 });
 
 // ─── TOAST ──────────────────────────────────────────────────────────────────
