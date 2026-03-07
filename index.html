@@ -14,6 +14,8 @@
     <a class="logo" href="#">Sere <span>Semilla</span></a>
     <nav>
       <a href="#galeria">Galería</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
       <a href="#" id="adminNavBtn" class="btn-upload-nav">Admin</a>
     </nav>
   </header>
@@ -31,20 +33,21 @@
           Ver galería
         </a>
       </div>
-      <div class="hero-visual">
-        <div class="hero-card large">
+      <!-- Hero visual: últimas 3 obras reales, cargadas dinámicamente -->
+      <div class="hero-visual" id="heroVisual">
+        <div class="hero-card large hero-card-placeholder">
           <div class="placeholder-icon">
-            <svg fill="none" stroke="rgba(100,80,60,0.8)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <svg fill="none" stroke="rgba(100,80,60,0.5)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
         </div>
-        <div class="hero-card small">
+        <div class="hero-card small hero-card-placeholder">
           <div class="placeholder-icon">
-            <svg fill="none" stroke="rgba(100,80,60,0.8)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <svg fill="none" stroke="rgba(100,80,60,0.5)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
         </div>
-        <div class="hero-card accent">
+        <div class="hero-card accent hero-card-placeholder">
           <div class="placeholder-icon">
-            <svg fill="none" stroke="rgba(100,80,60,0.8)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <svg fill="none" stroke="rgba(100,80,60,0.5)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
         </div>
       </div>
@@ -92,7 +95,6 @@
       </div>
 
       <div class="upload-form">
-        <!-- Drop zone -->
         <div class="drop-zone" id="dropZone">
           <input type="file" id="fileInput" accept="image/*" />
           <svg class="drop-icon" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
@@ -104,13 +106,11 @@
           <p>o hacé clic para explorar · JPG, PNG, WEBP</p>
         </div>
 
-        <!-- Image preview -->
         <div id="imagePreview" class="image-preview hidden">
           <img id="previewImg" src="" alt="Preview" />
           <button type="button" class="preview-change" id="changeImage">Cambiar imagen</button>
         </div>
 
-        <!-- Metadata fields -->
         <div class="meta-fields">
           <div class="field-group">
             <label for="artTitle">Título de la obra *</label>
@@ -157,6 +157,114 @@
     </div>
   </section>
 
+  <!-- SOBRE MÍ -->
+  <section id="sobre-mi" class="about-section">
+    <div class="about-inner">
+      <div class="about-text">
+        <div class="section-label">La artista</div>
+        <h2>Sobre mí</h2>
+        <div class="hero-divider"></div>
+        <p>
+          Soy artista visual especializada en fotomontaje. Mi trabajo nace de la superposición de imágenes, texturas y memorias, buscando construir mundos donde lo real y lo imaginado se disuelven.
+        </p>
+        <p>
+          Cada obra es una semilla: algo plantado con intención, que crece en quien la mira. Trabajo con fotografía analógica y digital, collage físico y edición digital, siempre en busca de esa tensión entre lo orgánico y lo construido.
+        </p>
+        <a href="#contacto" class="btn-primary" style="text-decoration:none; margin-top: 2rem;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Escribime
+        </a>
+      </div>
+      <div class="about-visual">
+        <div class="about-frame">
+          <div class="about-placeholder">
+            <svg fill="none" stroke="rgba(100,80,60,0.4)" stroke-width="1" viewBox="0 0 24 24" width="48" height="48"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <span>Foto de la artista</span>
+          </div>
+        </div>
+        <div class="about-tag">
+          <span>Fotomontaje</span>
+        </div>
+        <div class="about-tag about-tag-2">
+          <span>Arte visual</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MIS PROYECTOS -->
+  <section id="proyectos" class="projects-section">
+    <div class="projects-inner">
+      <div class="section-label">Trabajo</div>
+      <h2>Mis proyectos</h2>
+      <div class="hero-divider"></div>
+      <p class="projects-intro">Series y proyectos en los que he trabajado, cada uno con una intención y un universo propio.</p>
+
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-num">01</div>
+          <h3>Raíces</h3>
+          <p>Una serie sobre la memoria y el territorio. Fotografías de paisajes superpuestas con retratos familiares, explorando el vínculo entre identidad y lugar.</p>
+          <span class="project-tag">Serie · 2023</span>
+        </div>
+        <div class="project-card">
+          <div class="project-num">02</div>
+          <h3>Tránsito</h3>
+          <p>El movimiento como metáfora. Fotomontajes construidos a partir de exposiciones múltiples y collage digital, capturando la sensación de estar entre dos mundos.</p>
+          <span class="project-tag">Serie · 2024</span>
+        </div>
+        <div class="project-card">
+          <div class="project-num">03</div>
+          <h3>Encargos personalizados</h3>
+          <p>Obras únicas creadas a medida. Si tenés una idea o querés un fotomontaje especial, podemos trabajarlo juntas desde cero.</p>
+          <span class="project-tag">Servicio · Disponible</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="contact-section">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <div class="section-label">Hablemos</div>
+        <h2>Contacto</h2>
+        <div class="hero-divider"></div>
+        <p>¿Te interesa una obra, tenés una idea para un encargo o simplemente querés decir hola? Escribime por el medio que prefieras.</p>
+
+        <!-- WhatsApp CTA -->
+        <a href="https://wa.me/34683149248" target="_blank" rel="noopener" class="btn-whatsapp">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Escribime por WhatsApp
+        </a>
+      </div>
+
+      <div class="contact-right">
+        <form id="contactForm" class="contact-form">
+          <div class="field-group">
+            <label for="contactName">Tu nombre</label>
+            <input type="text" id="contactName" placeholder="María García" required />
+          </div>
+          <div class="field-group">
+            <label for="contactEmail">Tu email</label>
+            <input type="email" id="contactEmail" placeholder="maria@email.com" required />
+          </div>
+          <div class="field-group">
+            <label for="contactMsg">Mensaje</label>
+            <textarea id="contactMsg" placeholder="Contame qué tenés en mente…" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" id="contactSubmit">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar mensaje
+          </button>
+          <p class="contact-note">Te respondo por email a la brevedad.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <strong>Sere Semilla</strong> &nbsp;·&nbsp; Portfolio de Fotomontaje &nbsp;·&nbsp; Todos los derechos reservados
@@ -171,9 +279,15 @@
         <p class="lightbox-caption" id="lightboxCaption"></p>
         <p class="lightbox-desc" id="lightboxDesc"></p>
         <p class="lightbox-price" id="lightboxPrice"></p>
+        <!-- Botón Lo quiero (WhatsApp) -->
+        <a id="lightboxWhatsapp" href="#" target="_blank" rel="noopener" class="btn-whatsapp btn-whatsapp-lightbox">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          ¡Lo quiero!
+        </a>
       </div>
     </div>
-    <!-- Admin delete button (solo visible como admin) -->
     <button class="lightbox-delete hidden" id="lightboxDelete">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
       Eliminar obra

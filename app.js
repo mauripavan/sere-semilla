@@ -2,56 +2,64 @@
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+const WHATSAPP_NUMBER = '34683149248'; // +34 683 14 92 48
+
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let currentUser = null;
 let selectedFile = null;
-let currentArtwork = null; // para el lightbox
+let currentArtwork = null;
 
 // ─── ELEMENTS ──────────────────────────────────────────────────────────────
-const adminNavBtn    = document.getElementById('adminNavBtn');
-const loginModal     = document.getElementById('loginModal');
-const loginClose     = document.getElementById('loginClose');
-const loginForm      = document.getElementById('loginForm');
-const loginEmail     = document.getElementById('loginEmail');
-const loginPassword  = document.getElementById('loginPassword');
-const loginError     = document.getElementById('loginError');
-const loginSubmit    = document.getElementById('loginSubmit');
+const adminNavBtn     = document.getElementById('adminNavBtn');
+const loginModal      = document.getElementById('loginModal');
+const loginClose      = document.getElementById('loginClose');
+const loginForm       = document.getElementById('loginForm');
+const loginEmail      = document.getElementById('loginEmail');
+const loginPassword   = document.getElementById('loginPassword');
+const loginError      = document.getElementById('loginError');
+const loginSubmit     = document.getElementById('loginSubmit');
 
-const uploadSection  = document.getElementById('upload');
-const logoutBtn      = document.getElementById('logoutBtn');
+const uploadSection   = document.getElementById('upload');
+const logoutBtn       = document.getElementById('logoutBtn');
 
-const dropZone       = document.getElementById('dropZone');
-const fileInput      = document.getElementById('fileInput');
-const imagePreview   = document.getElementById('imagePreview');
-const previewImg     = document.getElementById('previewImg');
-const changeImage    = document.getElementById('changeImage');
+const dropZone        = document.getElementById('dropZone');
+const fileInput       = document.getElementById('fileInput');
+const imagePreview    = document.getElementById('imagePreview');
+const previewImg      = document.getElementById('previewImg');
+const changeImage     = document.getElementById('changeImage');
 
-const artTitle       = document.getElementById('artTitle');
-const artDesc        = document.getElementById('artDesc');
-const artPrice       = document.getElementById('artPrice');
-const publishBtn     = document.getElementById('publishBtn');
-const uploadProgress = document.getElementById('uploadProgress');
-const progressFill   = document.getElementById('progressFill');
-const progressLabel  = document.getElementById('progressLabel');
+const artTitle        = document.getElementById('artTitle');
+const artDesc         = document.getElementById('artDesc');
+const artPrice        = document.getElementById('artPrice');
+const publishBtn      = document.getElementById('publishBtn');
+const uploadProgress  = document.getElementById('uploadProgress');
+const progressFill    = document.getElementById('progressFill');
+const progressLabel   = document.getElementById('progressLabel');
 
-const galleryGrid    = document.getElementById('galleryGrid');
-const galleryCount   = document.getElementById('galleryCount');
-const galleryLoading = document.getElementById('galleryLoading');
+const galleryGrid     = document.getElementById('galleryGrid');
+const galleryCount    = document.getElementById('galleryCount');
+const galleryLoading  = document.getElementById('galleryLoading');
 
-const lightbox       = document.getElementById('lightbox');
-const lightboxImg    = document.getElementById('lightboxImg');
-const lightboxCaption= document.getElementById('lightboxCaption');
-const lightboxDesc   = document.getElementById('lightboxDesc');
-const lightboxPrice  = document.getElementById('lightboxPrice');
-const lightboxClose  = document.getElementById('lightboxClose');
-const lightboxDelete = document.getElementById('lightboxDelete');
+const heroVisual      = document.getElementById('heroVisual');
 
-const toast          = document.getElementById('toast');
-const toastMsg       = document.getElementById('toastMsg');
+const lightbox        = document.getElementById('lightbox');
+const lightboxImg     = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxDesc    = document.getElementById('lightboxDesc');
+const lightboxPrice   = document.getElementById('lightboxPrice');
+const lightboxWhatsapp= document.getElementById('lightboxWhatsapp');
+const lightboxClose   = document.getElementById('lightboxClose');
+const lightboxDelete  = document.getElementById('lightboxDelete');
+
+const toast           = document.getElementById('toast');
+const toastMsg        = document.getElementById('toastMsg');
+
+const contactForm     = document.getElementById('contactForm');
+const contactSubmit   = document.getElementById('contactSubmit');
 
 // ─── AUTH ───────────────────────────────────────────────────────────────────
 
-// Botón "Admin" en el nav: si está logueada → hace logout, si no → abre modal
 adminNavBtn.addEventListener('click', (e) => {
   e.preventDefault();
   if (currentUser) {
@@ -103,7 +111,6 @@ loginForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  // Éxito — el listener onAuthStateChange se encarga del resto
   closeLoginModal();
 });
 
@@ -113,7 +120,6 @@ async function handleLogout() {
   await db.auth.signOut();
 }
 
-// Escuchar cambios de sesión
 db.auth.onAuthStateChange((event, session) => {
   currentUser = session?.user ?? null;
   updateUIForAuth();
@@ -121,23 +127,65 @@ db.auth.onAuthStateChange((event, session) => {
 
 function updateUIForAuth() {
   if (currentUser) {
-    // Está logueada
     uploadSection.classList.remove('hidden');
     adminNavBtn.textContent = 'Cerrar sesión';
     adminNavBtn.style.background = 'var(--rust)';
-    // Scroll suave a upload si acaba de loguearse
-    if (uploadSection.classList.contains('just-logged')) return;
     uploadSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else {
-    // No está logueada
     uploadSection.classList.add('hidden');
     adminNavBtn.textContent = 'Admin';
     adminNavBtn.style.background = '';
     resetUploadForm();
   }
+  if (lightboxDelete) {
+    lightboxDelete.classList.toggle('hidden', !currentUser);
+  }
+}
 
-  // Mostrar/ocultar botón de eliminar en lightbox
-  lightboxDelete.classList.toggle('hidden', !currentUser);
+// ─── HERO CON OBRAS REALES ──────────────────────────────────────────────────
+
+function loadHeroImages(artworks) {
+  // Tomar hasta las últimas 3 obras
+  const picks = artworks.slice(0, 3);
+  if (picks.length === 0) return; // sin obras → mantener placeholders
+
+  const sizes = ['large', 'small', 'accent'];
+  const animations = ['floatA', 'floatB', 'floatC'];
+
+  // Reconstruir el hero-visual con imágenes reales
+  heroVisual.innerHTML = '';
+
+  picks.forEach((artwork, i) => {
+    const card = document.createElement('div');
+    card.className = `hero-card ${sizes[i]}`;
+    card.style.cursor = 'pointer';
+
+    const img = document.createElement('img');
+    img.src = artwork.image_url;
+    img.alt = artwork.title;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    img.style.display = 'block';
+
+    card.appendChild(img);
+    card.addEventListener('click', () => openLightbox(artwork));
+    heroVisual.appendChild(card);
+  });
+
+  // Si solo hay 1 o 2 obras, llenar el resto con placeholders vacíos
+  for (let i = picks.length; i < 3; i++) {
+    const card = document.createElement('div');
+    card.className = `hero-card ${sizes[i]} hero-card-placeholder`;
+    card.innerHTML = `<div class="placeholder-icon">
+      <svg fill="none" stroke="rgba(100,80,60,0.3)" stroke-width="1.5" viewBox="0 0 24 24" width="32" height="32">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+    </div>`;
+    heroVisual.appendChild(card);
+  }
 }
 
 // ─── DRAG & DROP / FILE INPUT ───────────────────────────────────────────────
@@ -160,9 +208,7 @@ fileInput.addEventListener('change', () => {
   if (fileInput.files[0]) handleFileSelected(fileInput.files[0]);
 });
 
-changeImage.addEventListener('click', () => {
-  fileInput.click();
-});
+changeImage.addEventListener('click', () => fileInput.click());
 
 function handleFileSelected(file) {
   if (!file.type.startsWith('image/')) {
@@ -217,13 +263,12 @@ publishBtn.addEventListener('click', async () => {
   setProgress(10, 'Preparando imagen…');
 
   try {
-    // 1. Subir imagen a Supabase Storage
     const ext = selectedFile.name.split('.').pop().toLowerCase();
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
     setProgress(30, 'Subiendo imagen…');
 
-    const { data: storageData, error: storageError } = await db.storage
+    const { error: storageError } = await db.storage
       .from(STORAGE_BUCKET)
       .upload(fileName, selectedFile, {
         cacheControl: '3600',
@@ -235,14 +280,11 @@ publishBtn.addEventListener('click', async () => {
 
     setProgress(70, 'Guardando datos…');
 
-    // 2. Obtener URL pública
     const { data: urlData } = db.storage
       .from(STORAGE_BUCKET)
       .getPublicUrl(fileName);
 
     const imageUrl = urlData.publicUrl;
-
-    // 3. Insertar en la tabla artworks
     const price = artPrice.value ? parseFloat(artPrice.value) : null;
 
     const { error: insertError } = await db
@@ -310,10 +352,13 @@ async function loadGallery() {
     galleryGrid.innerHTML = `
       <div class="gallery-empty">
         <p>La galería está vacía</p>
-        <span>Sube tu primera creación para comenzar</span>
+        <span>Subí tu primera creación para comenzar</span>
       </div>`;
     return;
   }
+
+  // Actualizar hero con las últimas 3 obras
+  loadHeroImages(data);
 
   galleryCount.textContent = `${data.length} ${data.length === 1 ? 'obra' : 'obras'}`;
   galleryGrid.innerHTML = '';
@@ -349,6 +394,14 @@ function openLightbox(artwork) {
   lightboxCaption.textContent = artwork.title;
   lightboxDesc.textContent = artwork.description || '';
   lightboxPrice.textContent = artwork.price != null ? `€ ${formatPrice(artwork.price)}` : '';
+
+  // Armar mensaje de WhatsApp con el nombre y precio de la obra
+  const priceText = artwork.price != null ? ` (€ ${formatPrice(artwork.price)})` : '';
+  const msg = encodeURIComponent(
+    `Hola! Me interesa la obra "${artwork.title}"${priceText}. ¿Está disponible?`
+  );
+  lightboxWhatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+
   lightboxDelete.classList.toggle('hidden', !currentUser);
   lightbox.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -380,12 +433,10 @@ lightboxDelete.addEventListener('click', async () => {
   lightboxDelete.textContent = 'Eliminando…';
 
   try {
-    // 1. Eliminar imagen del storage
     if (currentArtwork.image_path) {
       await db.storage.from(STORAGE_BUCKET).remove([currentArtwork.image_path]);
     }
 
-    // 2. Eliminar registro de la base de datos
     const { error } = await db
       .from('artworks')
       .delete()
@@ -413,13 +464,35 @@ lightboxDelete.addEventListener('click', async () => {
   }
 });
 
+// ─── CONTACTO ───────────────────────────────────────────────────────────────
+
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const name    = document.getElementById('contactName').value.trim();
+  const email   = document.getElementById('contactEmail').value.trim();
+  const message = document.getElementById('contactMsg').value.trim();
+
+  // Armar el mailto con los datos del form
+  const subject = encodeURIComponent(`Consulta desde Sere Semilla — ${name}`);
+  const body    = encodeURIComponent(
+    `Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`
+  );
+
+  // Abrir el cliente de mail
+  window.location.href = `mailto:seresemilla@gmail.com?subject=${subject}&body=${body}`;
+
+  showToast('Abriendo tu cliente de email…', 'success');
+  contactForm.reset();
+});
+
 // ─── TOAST ──────────────────────────────────────────────────────────────────
 
 let toastTimer;
 function showToast(msg, type = 'success') {
   toastMsg.textContent = msg;
   toast.classList.remove('show', 'success', 'error');
-  void toast.offsetWidth; // force reflow
+  void toast.offsetWidth;
   toast.classList.add('show', type);
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
@@ -428,16 +501,22 @@ function showToast(msg, type = 'success') {
 // ─── HELPERS ────────────────────────────────────────────────────────────────
 
 function formatPrice(price) {
-  return new Intl.NumberFormat('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(price);
+  return new Intl.NumberFormat('es-ES', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(price);
 }
 
 function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 // ─── INIT ───────────────────────────────────────────────────────────────────
 
-// Verificar sesión activa al cargar
 (async () => {
   const { data: { session } } = await db.auth.getSession();
   currentUser = session?.user ?? null;
