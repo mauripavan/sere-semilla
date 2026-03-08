@@ -842,6 +842,15 @@ footer strong {
   white-space: nowrap;
 }
 
+.admin-tabs-bar .btn-secondary {
+  color: rgba(255,255,255,0.75);
+  border-color: rgba(255,255,255,0.25);
+}
+.admin-tabs-bar .btn-secondary:hover {
+  color: white;
+  border-color: rgba(255,255,255,0.6);
+}
+
 .admin-tabs {
   display: flex;
   gap: 0.25rem;
@@ -1330,6 +1339,8 @@ footer strong {
     margin: 0.5rem 1rem;
     font-size: 0.72rem;
     padding: 0.35rem 0.75rem;
+    color: rgba(255,255,255,0.75);
+    border-color: rgba(255,255,255,0.25);
   }
   .admin-section { padding: 2rem 1.25rem; }
 }
