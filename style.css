@@ -1285,6 +1285,11 @@ footer strong {
   .about-visual { height: 280px; }
   .projects-grid { grid-template-columns: 1fr; gap: 1rem; }
   .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+  /* Admin — tablet */
+  .admin-label { display: none; }
+  .admin-tabs-inner { padding: 0 1.5rem; gap: 0.25rem; }
+  .admin-section { padding: 3rem 1.5rem; }
 }
 
 @media (max-width: 560px) {
@@ -1297,4 +1302,34 @@ footer strong {
   .about-section, .projects-section, .contact-section { padding: 4rem 1.5rem; }
   .modal { padding: 2rem 1.5rem; margin: 1rem; }
   .toast { bottom: 1rem; right: 1rem; left: 1rem; max-width: none; }
+
+  /* Admin — mobile */
+  .admin-tabs-inner {
+    padding: 0;
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .admin-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.5rem 1rem;
+    gap: 0.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .admin-tabs::-webkit-scrollbar { display: none; }
+  .admin-tab {
+    flex-shrink: 0;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+  }
+  .admin-tabs-inner > .btn-secondary {
+    align-self: flex-end;
+    margin: 0.5rem 1rem;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+  }
+  .admin-section { padding: 2rem 1.25rem; }
 }
