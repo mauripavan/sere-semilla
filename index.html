@@ -25,9 +25,9 @@
     <div class="hero">
       <div class="hero-text">
         <div class="section-label">Portfolio · Fotomontaje</div>
-        <h1>Arte que<em>germina.</em></h1>
+        <h1><span id="heroTitleMain">Arte que</span><em id="heroTitleEm">germina.</em></h1>
         <div class="hero-divider"></div>
-        <p>Un espacio para compartir creaciones donde la fotografía se convierte en algo nuevo. Cada imagen, una semilla con vida propia.</p>
+        <p id="heroDescription">Un espacio para compartir creaciones donde la fotografía se convierte en algo nuevo. Cada imagen, una semilla con vida propia.</p>
         <a href="#galeria" class="btn-primary" style="text-decoration:none">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           Ver galería
@@ -99,6 +99,10 @@
           <button class="admin-tab" data-tab="tab-proyectos">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
             Proyectos
+          </button>
+          <button class="admin-tab" data-tab="tab-sitio">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Sitio
           </button>
         </div>
         <button class="btn-secondary" id="logoutBtn">
@@ -238,6 +242,46 @@
       </div>
     </section>
 
+    <!-- TAB: SITIO -->
+    <section id="tab-sitio" class="admin-section hidden">
+      <div class="upload-inner">
+        <div class="section-label">Editar sección</div>
+        <h2>Sitio</h2>
+        <p style="color:var(--ink-light);font-size:.95rem;margin-bottom:2rem;">Estos cambios se verán reflejados en la página pública al instante.</p>
+
+        <div class="upload-form">
+          <!-- Título hero (parte principal) -->
+          <div class="field-group">
+            <label for="siteHeroTitleMain">Título hero (texto principal)</label>
+            <input type="text" id="siteHeroTitleMain" placeholder="Ej: Arte que" />
+          </div>
+
+          <!-- Título hero (énfasis) -->
+          <div class="field-group">
+            <label for="siteHeroTitleEm">Título hero (énfasis en cursiva)</label>
+            <input type="text" id="siteHeroTitleEm" placeholder="Ej: germina." />
+          </div>
+
+          <!-- Descripción hero -->
+          <div class="field-group">
+            <label for="siteHeroDescription">Descripción hero</label>
+            <textarea id="siteHeroDescription" rows="4" placeholder="Descripción breve que aparece bajo el título…"></textarea>
+          </div>
+
+          <!-- Intro proyectos -->
+          <div class="field-group">
+            <label for="siteProjectsIntro">Intro sección proyectos</label>
+            <textarea id="siteProjectsIntro" rows="4" placeholder="Texto introductorio de la sección de proyectos…"></textarea>
+          </div>
+
+          <button class="btn-primary" id="saveSiteBtn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Guardar cambios
+          </button>
+        </div>
+      </div>
+    </section>
+
   </div><!-- /adminPanel -->
 
   <!-- GALLERY -->
@@ -290,7 +334,7 @@
       <div class="section-label">Trabajo</div>
       <h2>Mis proyectos</h2>
       <div class="hero-divider"></div>
-      <p class="projects-intro">Series y proyectos en los que he trabajado, cada uno con una intención y un universo propio.</p>
+      <p class="projects-intro" id="projectsIntro">Series y proyectos en los que he trabajado, cada uno con una intención y un universo propio.</p>
       <div class="projects-grid" id="publicProjectsGrid">
         <div class="gallery-loading"><div class="spinner"></div></div>
       </div>

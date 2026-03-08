@@ -77,6 +77,19 @@ const publicAboutText2 = document.getElementById('publicAboutText2');
 const aboutPublicPhoto = document.getElementById('aboutPublicPhoto');
 const aboutPhotoPlaceholder = document.getElementById('aboutPhotoPlaceholder');
 
+// Sitio — admin
+const siteHeroTitleMain  = document.getElementById('siteHeroTitleMain');
+const siteHeroTitleEm    = document.getElementById('siteHeroTitleEm');
+const siteHeroDescription= document.getElementById('siteHeroDescription');
+const siteProjectsIntro  = document.getElementById('siteProjectsIntro');
+const saveSiteBtn        = document.getElementById('saveSiteBtn');
+
+// Hero — público
+const heroTitleMain    = document.getElementById('heroTitleMain');
+const heroTitleEm      = document.getElementById('heroTitleEm');
+const heroDescription  = document.getElementById('heroDescription');
+const projectsIntro    = document.getElementById('projectsIntro');
+
 // (proyectos ahora son dinámicos — ver sección PROYECTOS DINÁMICOS)
 
 // Contacto
@@ -181,6 +194,19 @@ async function loadSiteContent() {
     aboutPhotoPlaceholder.classList.add('hidden');
   }
 
+  // Actualizar sección pública — Hero y proyectos
+  if ('hero_title_main' in content) heroTitleMain.textContent = content.hero_title_main;
+  if ('hero_title_em' in content) {
+    if (content.hero_title_em === '') {
+      heroTitleEm.classList.add('hidden');
+    } else {
+      heroTitleEm.textContent = content.hero_title_em;
+      heroTitleEm.classList.remove('hidden');
+    }
+  }
+  if ('hero_description' in content) heroDescription.textContent = content.hero_description;
+  if ('projects_intro' in content) projectsIntro.textContent = content.projects_intro;
+
   return content;
 }
 
@@ -196,6 +222,12 @@ async function loadAdminContent() {
     photoCurrentImg.classList.remove('hidden');
     photoPlaceholder.classList.add('hidden');
   }
+
+  // Rellenar campos del panel admin — Sitio
+  siteHeroTitleMain.value   = content.hero_title_main  || '';
+  siteHeroTitleEm.value     = content.hero_title_em    || '';
+  siteHeroDescription.value = content.hero_description || '';
+  siteProjectsIntro.value   = content.projects_intro   || '';
 
   // Cargar proyectos en el panel admin
   loadAdminProjects();
@@ -453,7 +485,32 @@ function setAboutProgress(pct, label) {
   aboutProgressLabel.textContent = label;
 }
 
+// ─── GUARDAR SITIO ────────────────────────────────────────────────────────────
 
+saveSiteBtn.addEventListener('click', async () => {
+  if (!currentUser) return;
+  saveSiteBtn.disabled = true;
+
+  try {
+    const results = await Promise.all([
+      upsertContent('hero_title_main',  siteHeroTitleMain.value.trim()),
+      upsertContent('hero_title_em',    siteHeroTitleEm.value.trim()),
+      upsertContent('hero_description', siteHeroDescription.value.trim()),
+      upsertContent('projects_intro',   siteProjectsIntro.value.trim()),
+    ]);
+    const failed = results.find(r => r.error);
+    if (failed) throw failed.error;
+
+    await loadSiteContent();
+    showToast('Contenido del sitio actualizado', 'success');
+
+  } catch (err) {
+    console.error(err);
+    showToast('Error al guardar. Intentá de nuevo.', 'error');
+  } finally {
+    saveSiteBtn.disabled = false;
+  }
+});
 
 // ─── HERO CON OBRAS REALES ──────────────────────────────────────────────────
 
